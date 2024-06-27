@@ -21,6 +21,7 @@ function CreateArticle() {
 		content: "",
 		link: "",
 	});
+
 	const validationSchema = Yup.object().shape({
 		name: Yup.string().required("Ім'я є обов'язковим"),
 		type: Yup.string().required("Тип є обов'язковим"),
@@ -37,23 +38,25 @@ function CreateArticle() {
 		content: Yup.string().required("Контент є обов'язковим"),
 		link: Yup.string().required("Посилання є обов'язковим"),
 	});
-	const removeEmptyFields = () => {
-		const updatedFormData = { ...formData };
+
+	const removeEmptyFields = (data) => {
+		const updatedFormData = { ...data };
 		Object.entries(updatedFormData).forEach(([key, value]) => {
 			if (value === "" || value === " " || value === "-") {
 				delete updatedFormData[key];
 			}
 		});
-		setFormData(updatedFormData);
+		return updatedFormData;
 	};
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		removeEmptyFields();
+	const handleSubmit = async (values, { setSubmitting }) => {
+		const updatedFormData = removeEmptyFields(values);
 
-		if (formData.age) {
-			formData.age = formData.age.toString();
+		if (updatedFormData.age) {
+			updatedFormData.age = updatedFormData.age.toString();
 		}
+		console.log(updatedFormData);
+
 		try {
 			const response = await fetch(
 				"http://localhost:8080/articles/add-article",
@@ -63,22 +66,24 @@ function CreateArticle() {
 						"Content-Type": "application/json",
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
 					},
-					body: JSON.stringify(formData),
+					body: JSON.stringify(updatedFormData),
 				}
 			);
-
+			console.log(response);
 			if (response.ok) {
 				navigate("/superadmin/page");
 			}
 		} catch (error) {
 			console.error("Failed to create animal card:", error);
+		} finally {
+			setSubmitting(false);
 		}
 	};
+
 	return (
 		<div className="container">
-			<h2>Редагувати статтю</h2>
+			<h2>Створити статтю</h2>
 			<Formik
-				enableReinitialize
 				initialValues={formData}
 				validationSchema={validationSchema}
 				onSubmit={handleSubmit}>
@@ -151,7 +156,7 @@ function CreateArticle() {
 						</div>
 						<div className="mb-3">
 							<label htmlFor="activityLevel" className="form-label">
-								ActivityLevel:
+								Activity Level:
 							</label>
 							<Field
 								as="select"
@@ -163,7 +168,7 @@ function CreateArticle() {
 								<option value="Low">Low</option>
 							</Field>
 							<ErrorMessage
-								name="type"
+								name="activityLevel"
 								component="div"
 								className="text-danger"
 							/>

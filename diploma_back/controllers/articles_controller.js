@@ -68,10 +68,6 @@ async function post_article(req, res, next) {
 	try {
 		const newArticleData = req.body;
 		const result = articles_schema.validate(newArticleData);
-		if (result.error) {
-			console.log("Validation error:", result.error.message);
-			throw new Error(result.error.message);
-		}
 		const newData = await articles_services.create_article(newArticleData);
 		res.status(201).json(newData);
 	} catch (error) {

@@ -88,8 +88,6 @@ async function search_animals(req, res, next) {
 	try {
 		const searchTerm = req.params.term;
 		let animals;
-
-		// Спробуємо знайти тварину за іменем
 		animals = await animal_services.search_animals_by_name(searchTerm);
 		if (animals && animals.length > 0) {
 			const animalsWithThumbnails = await Promise.all(

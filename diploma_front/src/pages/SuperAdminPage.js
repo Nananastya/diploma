@@ -136,9 +136,12 @@ function SuperAdminPage() {
 			</div>
 			<h3>USERS:</h3>
 			<div className="row mt-4">
-				{user.map((u) => (
-					<UserCard key={u._id} user={u} isAdmin={true} />
-				))}
+				{user.map(
+					(u) =>
+						u.role !== "superadmin" && (
+							<UserCard key={u._id} user={u} isAdmin={true} />
+						)
+				)}
 			</div>
 			<h3>ARTICLES:</h3>
 			<div className="row mt-4">

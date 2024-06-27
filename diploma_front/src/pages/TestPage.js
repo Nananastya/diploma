@@ -82,6 +82,7 @@ function TestPage() {
 		setShowResult(false);
 		setAnimals([]);
 		setArticles([]);
+		window.location.reload();
 	};
 
 	useEffect(() => {

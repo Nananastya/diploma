@@ -40,7 +40,6 @@ function UserCard({ user, isAdmin }) {
 			<div className="card border-primary mb-3" style={{ width: "18rem" }}>
 				<div className="card-body">
 					<p>Login: {user.login}</p>
-					<p>Password: {user.password}</p>
 					<p>Role: {user.role}</p>
 				</div>
 				<div className="d-flex flex-column justify-content-center align-items-center">
